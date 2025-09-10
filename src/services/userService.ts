@@ -1,19 +1,25 @@
-import { User } from '../types/user'
-import { dataStore } from '../data/store'
+import { dataStore } from "../data/store";
+import { User } from "../types/user";
 
 export class UserService {
-  static getCurrentUser(token: string): { user: User | null; error: string | null } {
-    const session = dataStore.sessions.get(token)
-    
-    if (!session || session.expiresAt < new Date()) {
-      return { user: null, error: 'Unauthorized access - please log in again.' }
-    }
+	static getCurrentUser(token: string): {
+		user: User | null;
+		error: string | null;
+	} {
+		const session = dataStore.sessions.get(token);
 
-    const user = dataStore.users.find(u => u.id === session.userId)
-    if (!user) {
-      return { user: null, error: 'User not found' }
-    }
+		if (!session || session.expiresAt < new Date()) {
+			return {
+				user: null,
+				error: "Unauthorized access - please log in again.",
+			};
+		}
 
-    return { user, error: null }
-  }
+		const user = dataStore.users.find((u) => u.id === session.userId);
+		if (!user) {
+			return { user: null, error: "User not found" };
+		}
+
+		return { user, error: null };
+	}
 }
